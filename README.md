@@ -31,12 +31,10 @@ A comprehensive web-based movie ticket booking system built with PHP, MySQL, and
   - **Multiple Table Relations**:
     - Movies table with Bookings table (one-to-many)
     - Users table with Bookings table (one-to-many)
-    - Complex JOIN operations for booking management
   - **Frontend Enhancements**:
     - Bootstrap 5 for modern UI
     - Responsive design
     - Interactive confirmations
-    - Status badges for bookings
   - **Backend Features**:
     - Transaction management
     - Data validation
@@ -69,16 +67,11 @@ A comprehensive web-based movie ticket booking system built with PHP, MySQL, and
 4. **Admin Account Setup**
    - The `create_admin.php` page is shown during first start
    - Once an admin account exists, this page will be disabled
-   - Use the provided admin key ('webfejlesztes2024')
+   - Use the provided admin key (`key=webfejlesztes2024`)
    - Choose your admin username and password
    - Password must be at least 6 characters
    - After creation, you can log in with these credentials
-   - Additional admin accounts must be created by existing administrators
-
-5. **Testing the System**
-   - Create a regular user account through the registration page
-   - Log in as admin to add movies
-   - Test booking functionality with regular user account
+   - Additional admin accounts must be created through the registration page and then assigned administrator roles via the manage users page.
 
 ## Database Structure
 
@@ -132,7 +125,6 @@ CREATE TABLE users (
 - View available movies
 - Make bookings
 - View their own bookings
-- See booking status (upcoming/past)
 
 ## Security Features
 
@@ -187,9 +179,8 @@ movie-booking-system/
 ## Technologies Used
 
 - **Backend**: 
-  - PHP 7+ (OOP Style)
+  - PHP 7+
   - MySQL Database
-  - PDO/MySQLi
 
 - **Frontend**: 
   - HTML5
@@ -202,23 +193,6 @@ movie-booking-system/
   - Password Hashing
   - Prepared Statements
   - Input Validation
-
-## Development Notes
-
-1. **Database Considerations**
-   - All tables use InnoDB engine for transaction support
-   - Foreign key constraints maintain data integrity
-   - Indexes on frequently queried columns
-
-2. **Security Implementation**
-   - All user inputs are validated and sanitized
-   - Passwords are hashed using secure algorithms
-   - Session management prevents unauthorized access
-
-3. **Performance Optimizations**
-   - Efficient database queries with proper indexing
-   - Minimal database connections
-   - Optimized JOIN operations
 
 ## Support and Contribution
 
