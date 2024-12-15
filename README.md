@@ -67,12 +67,13 @@ A comprehensive web-based movie ticket booking system built with PHP, MySQL, and
      ```
 
 4. **Admin Account Setup**
-   - Visit `create_admin.php` in your browser
-   - Use the following details:
-     - Admin Key: `webfejlesztes2024`
-     - Choose your admin username and password
-     - Password must be at least 6 characters
+   - The `create_admin.php` page is shown during first start
+   - Once an admin account exists, this page will be disabled
+   - Use the provided admin key ('webfejlesztes2024')
+   - Choose your admin username and password
+   - Password must be at least 6 characters
    - After creation, you can log in with these credentials
+   - Additional admin accounts must be created by existing administrators
 
 5. **Testing the System**
    - Create a regular user account through the registration page
