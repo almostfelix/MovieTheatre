@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
+    header("location: ../login.php");
     exit;
 }
 
@@ -32,12 +32,12 @@ $result = $stmt->get_result();
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Movie Booking</a>
+            <a class="navbar-brand" href="../index.php">Movie Booking</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-item nav-link" href="index.php">Movies</a>
+                <a class="nav-item nav-link" href="../index.php">Movies</a>
                 <a class="nav-item nav-link active" href="my_bookings.php">My Bookings</a>
                 <span class="nav-item nav-link text-light">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a class="nav-item nav-link" href="logout.php">Logout</a>
+                <a class="nav-item nav-link" href="../public/logout.php">Logout</a>
             </div>
         </div>
     </nav>

@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
+    header("location: ../login.php");
     exit;
 }
 
@@ -24,11 +24,11 @@ if (isset($_GET['movie_id'])) {
     if ($result->num_rows == 1) {
         $movie = $result->fetch_assoc();
     } else {
-        header("location: index.php");
+        header("location: ../index.php");
         exit;
     }
 } else {
-    header("location: index.php");
+    header("location: ../index.php");
     exit;
 }
 
@@ -115,16 +115,16 @@ $bookings = $stmt->get_result();
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Movie Booking</a>
+            <a class="navbar-brand" href="../index.php">Movie Booking</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-item nav-link" href="index.php">Movies</a>
+                <a class="nav-item nav-link" href="../index.php">Movies</a>
                 <?php if ($_SESSION['is_admin']): ?>
                     <a class="nav-item nav-link" href="manage_bookings.php">All Bookings</a>
                 <?php else: ?>
                     <a class="nav-item nav-link" href="my_bookings.php">My Bookings</a>
                 <?php endif; ?>
                 <span class="nav-item nav-link text-light">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a class="nav-item nav-link" href="logout.php">Logout</a>
+                <a class="nav-item nav-link" href="../public/logout.php">Logout</a>
             </div>
         </div>
     </nav>
@@ -199,7 +199,7 @@ $bookings = $stmt->get_result();
         </div>
         
         <div class="mt-3">
-            <a href="index.php" class="btn btn-secondary">Back to Movies</a>
+            <a href="../index.php" class="btn btn-secondary">Back to Movies</a>
         </div>
     </div>
 

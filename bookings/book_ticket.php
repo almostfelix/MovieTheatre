@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
+    header("location: ../public/login.php");
     exit;
 }
 
@@ -23,14 +23,14 @@ if (isset($_GET['movie_id'])) {
             if ($result->num_rows == 1) {
                 $movie = $result->fetch_assoc();
             } else {
-                header("location: index.php");
+                header("location: ../index.php");
                 exit;
             }
         }
         $stmt->close();
     }
 } else {
-    header("location: index.php");
+    header("location: ../index.php");
     exit;
 }
 
@@ -125,13 +125,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">Book Now</button>
-                                    <a href="index.php" class="btn btn-secondary">Back to Movies</a>
+                                    <a href="../index.php" class="btn btn-secondary">Back to Movies</a>
                                 </div>
                             </form>
                         <?php else: ?>
                             <div class="alert alert-warning">Sorry, this movie is sold out.</div>
                             <div class="d-grid">
-                                <a href="index.php" class="btn btn-secondary">Back to Movies</a>
+                                <a href="../index.php" class="btn btn-secondary">Back to Movies</a>
                             </div>
                         <?php endif; ?>
                     </div>

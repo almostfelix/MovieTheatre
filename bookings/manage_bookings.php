@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Check if user is admin
 if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-    header("location: index.php");
+    header("location: ../index.php");
     exit;
 }
 
@@ -70,11 +70,12 @@ $result = $conn->query($sql);
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Movie Booking</a>
+            <a class="navbar-brand" href="../index.php">Movie Booking</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-item nav-link" href="index.php">Movies</a>
+                <a class="nav-item nav-link" href="../index.php">Movies</a>
                 <a class="nav-item nav-link active" href="manage_bookings.php">Manage Bookings</a>
-                <a class="nav-item nav-link" href="logout.php">Logout</a>
+                <a class="nav-item nav-link" href="../admin/manage_users.php">Manage Users</a>
+                <a class="nav-item nav-link" href="../public/logout.php">Logout</a>
             </div>
         </div>
     </nav>

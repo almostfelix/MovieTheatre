@@ -153,22 +153,34 @@ CREATE TABLE users (
    - Booking conflict prevention
    - Data consistency maintenance
 
-## File Structure and Purpose
+## Project Structure
 
 ```
-├── config.php           # Database and system configuration
-├── index.php           # Main movie listing page
-├── login.php           # User authentication
-├── register.php        # New user registration
-├── logout.php          # Session termination
-├── create_admin.php    # Admin account creation
-├── add_movie.php       # Movie creation (admin)
-├── edit_movie.php      # Movie modification (admin)
-├── delete_movie.php    # Movie removal (admin)
-├── book_ticket.php     # Ticket booking
-├── my_bookings.php     # User booking history
-├── manage_bookings.php # Admin booking management
-└── movie_bookings.php  # Per-movie booking view
+movie-booking-system/
+├── admin/
+│   ├── add_movie.php      # Movie creation interface
+│   ├── create_admin.php   # Admin account setup
+│   ├── delete_movie.php   # Movie deletion handler  
+│   ├── edit_movie.php     # Movie editing interface
+│   └── manage_users.php   # User management dashboard
+│
+├── bookings/
+│   ├── book_ticket.php    # Ticket booking interface
+│   ├── manage_bookings.php # Admin booking management
+│   ├── movie_bookings.php # Per-movie booking view
+│   └── my_bookings.php    # User booking history
+│
+├── config/
+│   └── config.php         # Database and system configuration
+│
+├── public/
+│   ├── login.php         # User authentication
+│   ├── logout.php        # Session termination
+│   └── register.php      # New user registration
+│
+├── index.php             # Main movie listing page
+├── LICENSE              # Apache 2.0 license
+└── README.md            # Project documentation
 ```
 
 ## Technologies Used
@@ -182,7 +194,6 @@ CREATE TABLE users (
   - HTML5
   - CSS3
   - Bootstrap 5
-  - JavaScript
   - Responsive Design
 
 - **Security**: 

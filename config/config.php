@@ -51,4 +51,10 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error creating database: " . $conn->error;
 }
-?> 
+
+function checkAdminExists($conn) {
+    $sql = "SELECT id FROM users WHERE is_admin = 1";
+    $result = $conn->query($sql);
+    return $result->num_rows > 0;
+}
+?>

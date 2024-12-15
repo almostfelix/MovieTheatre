@@ -1,6 +1,18 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/config/config.php';
+
+// First check if any admin exists
+if (!checkAdminExists($conn)) {
+    header("location: admin/create_admin.php");
+    exit;
+}
+
+// Then check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("location: public/login.php");
+    exit;
+}
 
 // Fetch all movies
 $sql = "SELECT m.*, COUNT(b.id) as total_bookings 
@@ -26,16 +38,17 @@ $result = $conn->query($sql);
             <div class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <?php if ($_SESSION['is_admin']): ?>
-                        <a class="nav-item nav-link" href="manage_bookings.php">Manage Bookings</a>
+                        <a class="nav-item nav-link" href="bookings/manage_bookings.php">Manage Bookings</a>
+                        <a class="nav-item nav-link" href="admin/manage_users.php">Manage Users</a>
                     <?php else: ?>
-                        <a class="nav-item nav-link" href="my_bookings.php">My Bookings</a>
+                        <a class="nav-item nav-link" href="bookings/my_bookings.php">My Bookings</a>
                     <?php endif; ?>
                     <span class="nav-item nav-link text-light">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?> 
                     <?php echo ($_SESSION['is_admin'] ? '(Admin)' : '(User)'); ?></span>
-                    <a class="nav-item nav-link" href="logout.php">Logout</a>
+                    <a class="nav-item nav-link" href="public/logout.php">Logout</a>
                 <?php else: ?>
-                    <a class="nav-item nav-link" href="login.php">Login</a>
-                    <a class="nav-item nav-link" href="register.php">Register</a>
+                    <a class="nav-item nav-link" href="public/login.php">Login</a>
+                    <a class="nav-item nav-link" href="public/register.php">Register</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -44,7 +57,7 @@ $result = $conn->query($sql);
     <div class="container mt-4">
         <h2>Available Movies</h2>
         <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
-            <a href="add_movie.php" class="btn btn-primary mb-3">Add New Movie</a>
+            <a href="admin/add_movie.php" class="btn btn-primary mb-3">Add New Movie</a>
         <?php endif; ?>
 
         <?php if (isset($_SESSION['success_message'])): ?>
@@ -77,12 +90,12 @@ $result = $conn->query($sql);
                                 <td><?php echo htmlspecialchars($row['total_bookings']); ?></td>
                                 <td>
                                     <?php if (isset($_SESSION['user_id'])): ?>
-                                        <a href="book_ticket.php?movie_id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm">Book Ticket</a>
-                                        <a href="movie_bookings.php?movie_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">View Bookings</a>
+                                        <a href="bookings/book_ticket.php?movie_id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm">Book Ticket</a>
+                                        <a href="bookings/movie_bookings.php?movie_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">View Bookings</a>
                                     <?php endif; ?>
                                     <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
-                                        <a href="edit_movie.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="delete_movie.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure? This will delete all bookings for this movie.')">Delete</a>
+                                        <a href="admin/edit_movie.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="admin/delete_movie.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure? This will delete all bookings for this movie.')">Delete</a>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -99,4 +112,4 @@ $result = $conn->query($sql);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

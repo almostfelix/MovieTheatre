@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Check if user is admin
 if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-    header("location: index.php");
+    header("location: ../index.php");
     exit;
 }
 
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Add Movie</button>
-                                <a href="index.php" class="btn btn-secondary">Back to Movies</a>
+                                <a href="../index.php" class="btn btn-secondary">Back to Movies</a>
                             </div>
                         </form>
                     </div>
