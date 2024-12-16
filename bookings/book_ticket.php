@@ -11,6 +11,16 @@ if (!isset($_SESSION['user_id'])) {
 $error = '';
 $success = '';
 $movie = null;
+$users = [];
+
+// If admin, fetch all non-admin users
+if ($_SESSION['is_admin']) {
+    $sql = "SELECT id, username FROM users WHERE is_admin = 0 ORDER BY username";
+    $result = $conn->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+}
 
 // Get movie details
 if (isset($_GET['movie_id'])) {
@@ -37,6 +47,7 @@ if (isset($_GET['movie_id'])) {
 // Process booking
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $seats = (int)$_POST['seats'];
+    $booking_user_id = $_SESSION['is_admin'] ? (int)$_POST['user_id'] : $_SESSION['user_id'];
     
     if ($seats <= 0 || $seats > $movie['available_seats']) {
         $error = "Invalid number of seats.";
@@ -56,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Create booking
                 $sql = "INSERT INTO bookings (movie_id, user_id, seats) VALUES (?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("iii", $movie_id, $_SESSION['user_id'], $seats);
+                $stmt->bind_param("iii", $movie_id, $booking_user_id, $seats);
                 $stmt->execute();
                 
                 // Update available seats
@@ -119,6 +130,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         
                         <?php if ($movie['available_seats'] > 0): ?>
                             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?movie_id=" . $movie_id; ?>" method="post">
+                                <?php if ($_SESSION['is_admin']): ?>
+                                    <div class="mb-3">
+                                        <label for="user_id" class="form-label">Select User</label>
+                                        <select class="form-select" id="user_id" name="user_id" required>
+                                            <option value="">Choose a user...</option>
+                                            <?php foreach ($users as $user): ?>
+                                                <option value="<?php echo $user['id']; ?>">
+                                                    <?php echo htmlspecialchars($user['username']); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="mb-3">
                                     <label for="seats" class="form-label">Number of Seats</label>
                                     <input type="number" class="form-control" id="seats" name="seats" min="1" max="<?php echo $movie['available_seats']; ?>" required>
@@ -142,4 +166,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
