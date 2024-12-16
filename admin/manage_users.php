@@ -28,7 +28,22 @@ if (isset($_GET['delete_id'])) {
         $user = $result->fetch_assoc();
         
         if ($user && !$user['is_admin']) {
-            // Delete user's bookings first
+            // Get all bookings for this user to update available seats
+            $sql = "SELECT movie_id, seats FROM bookings WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $bookings = $stmt->get_result();
+            
+            // Update available seats for each movie
+            while ($booking = $bookings->fetch_assoc()) {
+                $sql = "UPDATE movies SET available_seats = available_seats + ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ii", $booking['seats'], $booking['movie_id']);
+                $stmt->execute();
+            }
+            
+            // Delete user's bookings
             $sql = "DELETE FROM bookings WHERE user_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $user_id);
@@ -87,6 +102,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users - Movie Booking System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -96,7 +112,25 @@ $result = $conn->query($sql);
                 <a class="nav-item nav-link" href="../index.php">Movies</a>
                 <a class="nav-item nav-link" href="../bookings/manage_bookings.php">Manage Bookings</a>
                 <a class="nav-item nav-link active" href="manage_users.php">Manage Users</a>
-                <a class="nav-item nav-link" href="../public/logout.php">Logout</a>
+                <div class="dropdown">
+                        <button class="btn btn-secondary align-items-center bg-dark btn-link" style="color: white;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <div class="dropdown-item d-flex justify-content-between align-items-center">
+                                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <?php if ($_SESSION['is_admin']): ?>
+                                        <span class="badge bg-danger">Admin</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-primary">User</span>
+                                    <?php endif; ?>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="public/logout.php">Logout</a></li>
+                        </ul>
+                    </div>
             </div>
         </div>
     </nav>
@@ -174,4 +208,4 @@ $result = $conn->query($sql);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

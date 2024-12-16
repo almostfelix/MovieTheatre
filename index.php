@@ -30,6 +30,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Booking System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,15 +38,35 @@ $result = $conn->query($sql);
             <a class="navbar-brand" href="index.php">Movie Booking</a>
             <div class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    <a class="nav-item nav-link active" href="index.php">Movies</a>
                     <?php if ($_SESSION['is_admin']): ?>
                         <a class="nav-item nav-link" href="bookings/manage_bookings.php">Manage Bookings</a>
                         <a class="nav-item nav-link" href="admin/manage_users.php">Manage Users</a>
                     <?php else: ?>
                         <a class="nav-item nav-link" href="bookings/my_bookings.php">My Bookings</a>
                     <?php endif; ?>
-                    <span class="nav-item nav-link text-light">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?> 
-                    <?php echo ($_SESSION['is_admin'] ? '(Admin)' : '(User)'); ?></span>
-                    <a class="nav-item nav-link" href="public/logout.php">Logout</a>
+
+                    <div class="dropdown">
+                        <button class="btn btn-secondary align-items-center bg-dark btn-link" style="color: white;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <div class="dropdown-item d-flex justify-content-between align-items-center">
+                                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <?php if ($_SESSION['is_admin']): ?>
+                                        <span class="badge bg-danger">Admin</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-primary">User</span>
+                                    <?php endif; ?>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="public/logout.php">Logout</a></li>
+                        </ul>
+                    </div>
+
+                
                 <?php else: ?>
                     <a class="nav-item nav-link" href="public/login.php">Login</a>
                     <a class="nav-item nav-link" href="public/register.php">Register</a>
