@@ -4,20 +4,20 @@ A comprehensive web-based movie ticket booking system built with PHP, MySQL, and
 
 ## Features
 
-### Level 2 Requirements ✓
+### Grade 2 Requirements ✓
 - **Database Table Display**
   - Movies table data displayed in a clean, tabular format on the main page
   - Read operations implemented for viewing movie details
   - Responsive table design using Bootstrap
 
-### Level 3 Requirements ✓
+### Grade 3 Requirements ✓
 - **Complete CRUD Operations**
   - **Create**: Add new movies (admin)
   - **Read**: View movie listings and details
   - **Update**: Edit movie information (admin)
   - **Delete**: Remove movies and their associated bookings (admin)
 
-### Level 4 Requirements ✓
+### Grade 4 Requirements ✓
 - **Security Implementation**
   - Session-based authentication system
   - Role-based access control (Admin/User)
@@ -26,7 +26,7 @@ A comprehensive web-based movie ticket booking system built with PHP, MySQL, and
   - Login/Register functionality
   - SQL injection prevention using prepared statements
 
-### Level 5 Requirements ✓
+### Grade 5 Requirements ✓
 - **Advanced Features**
   - **Multiple Table Relations**:
     - Movies table with Bookings table (one-to-many)
