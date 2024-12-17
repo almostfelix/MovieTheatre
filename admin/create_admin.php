@@ -8,7 +8,7 @@ $success = '';
 // If admin user already exists and someone is not logged in as admin, prevent access
 $sql = "SELECT id FROM users WHERE is_admin = 1";
 $result = $conn->query($sql);
-if ($result->num_rows > 0 || (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin'])) {
+if ($result->num_rows > 0) {
     header("location: ../index.php");
     exit;
 }
