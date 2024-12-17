@@ -129,22 +129,44 @@ CREATE TABLE users (
 ## Security Features
 
 1. **Authentication**
-   - Secure password hashing using PHP's password_hash()
-   - Session-based user tracking
-   - Protected routes with role verification
-   - Admin key requirement for admin creation
+
+   - **Secure Password Hashing**: User passwords are securely hashed using PHP's `password_hash()` function.
+     - Registration implementation in [`public/register.php`](public/register.php).
+     - Password verification during login using `password_verify()` in [`public/login.php`](public/login.php).
+   - **Session Management**: The system uses PHP sessions to securely track user authentication.
+     - Sessions are configured with secure parameters in [`public/login.php`](public/login.php), including `httponly` and `samesite='Strict'`.
+     - Session IDs are regenerated upon login using `session_regenerate_id(true)` to prevent session fixation attacks.
+   - **Role-Based Access Control**: Access to administrative features is restricted based on user roles.
+     - Admin privileges are checked using the `is_admin` session variable.
+     - See implementation in [`admin/create_admin.php`](admin/create_admin.php) and [`admin/`](admin/).
 
 2. **Data Protection**
-   - Prepared statements for all SQL queries
-   - Input validation and sanitization
-   - XSS prevention through htmlspecialchars
-   - CSRF protection through session tokens
 
-3. **Transaction Management**
-   - Atomic operations for bookings
-   - Seat availability synchronization
-   - Booking conflict prevention
-   - Data consistency maintenance
+   - **Prepared Statements**: All SQL queries use prepared statements with bound parameters to prevent SQL injection attacks.
+     - Implemented in [`public/login.php`](public/login.php), [`public/register.php`](public/register.php), and [`admin/create_admin.php`](admin/create_admin.php).
+   - **Input Validation**: User inputs are validated and sanitized before processing.
+     - Example: Ensuring passwords match and meet length requirements in [`public/register.php`](public/register.php).
+   - **Cross-Site Scripting (XSS) Prevention**: Outputs are escaped using `htmlspecialchars()` to prevent XSS attacks.
+     - Applied when displaying user-generated content.
+
+3. **Session Security**
+
+   - **Secure Session Cookies**: Sessions are configured with `session_set_cookie_params()` to enhance security.
+     - Parameters include `'httponly' => true` and `'samesite' => 'Strict'` in [`public/login.php`](public/login.php).
+   - **Session Fixation Prevention**: Sessions are regenerated upon login to prevent fixation attacks.
+     - Implemented using `session_regenerate_id(true)` in [`public/login.php`](public/login.php).
+
+4. **Access Control**
+
+   - **Protected Routes**: Unauthorized access to restricted pages redirects users appropriately.
+     - Checks are performed at the beginning of scripts like [`admin/create_admin.php`](admin/create_admin.php).
+   - **Admin Key Verification**: Admin account creation requires a valid admin key.
+     - Implemented in [`admin/manage_users.php`](admin/manage_users.php) to prevent unauthorized admin access.
+
+5. **Password Policies**
+
+   - **Minimum Password Length**: Passwords must be at least 6 characters long.
+     - Enforced in [`public/register.php`](public/register.php) and [`admin/create_admin.php`](admin/create_admin.php).
 
 ## Project Structure
 

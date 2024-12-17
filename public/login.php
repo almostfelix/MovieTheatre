@@ -1,4 +1,11 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 3600,
+    'path' => '/',
+    'secure' => false,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
 session_start();
 
 if (isset($_SESSION['user_id'])) {
@@ -24,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result->num_rows == 1) {
                 $row = $result->fetch_assoc();
                 if (password_verify($password, $row['password'])) {
+                    session_regenerate_id(true);
                     $_SESSION['user_id'] = $row['id'];
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['is_admin'] = $row['is_admin'];
